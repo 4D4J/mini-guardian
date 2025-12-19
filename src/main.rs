@@ -21,29 +21,28 @@ struct Cli {
     #[command(subcommand)]
     command: Commands,
 
-    /// Output results in JSON format
+    /// sortir en format json le/les résultats 
     #[arg(short, long, global = true)]
     json: bool,
 }
 
 #[derive(Subcommand)]
 enum Commands {
-    /// List all your GitHub repositories
+    /// Lister les repos github
     Repos,
 
-    /// Scan a specific repository for secrets
+    /// Scanner un repo github spécifique
     Scan {
-        /// Repository name (owner/repo or just repo name)
         repo: String,
     },
 
-    /// Scan all your repositories for secrets
+    /// Scanner tous les repos github
     ScanAll {
         #[arg(long, help = "Scan only private repositories")]
         private_only: bool,
     },
 
-    /// Show available secret detection patterns
+    /// Afficher les patterns de detection des secrets
     Patterns,
 }
 
