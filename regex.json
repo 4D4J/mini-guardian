@@ -1,0 +1,130 @@
+{
+    "_comment": [
+        "Vous voulez ajouter une nouvelle regex pour detecter un secret ?",
+        "Vous pouvez ajouter un nouvel objet dans le tableau 'patterns'",
+        "avec les champs suivants :",
+        "  - name: Nom du type de secret (ex: 'My Service API Key')",
+        "  - regex: Expression reguliere pour detecter le secret",
+        "  - description: Description courte du secret",
+        "",
+        "Exemple :",
+        "  {",
+        "    \"name\": \"Mon Service API Key\",",
+        "    \"regex\": \"myservice_[a-zA-Z0-9]{32}\",",
+        "    \"description\": \"Cle API pour Mon Service\"",
+        "  }",
+        ""
+    ],
+    "patterns": [
+        {
+            "name": "AWS Access Key ID",
+            "regex": "AKIA[0-9A-Z]{16}",
+            "description": "Amazon Web Services access key"
+        },
+        {
+            "name": "AWS Secret Key",
+            "regex": "(?i)aws(.{0,20})?['\"][0-9a-zA-Z/+]{40}['\"]",
+            "description": "Amazon Web Services secret key"
+        },
+        {
+            "name": "GitHub Token",
+            "regex": "gh[pousr]_[A-Za-z0-9_]{36,255}",
+            "description": "GitHub Personal Access Token"
+        },
+        {
+            "name": "GitHub OAuth",
+            "regex": "gho_[A-Za-z0-9_]{36,255}",
+            "description": "GitHub OAuth Access Token"
+        },
+        {
+            "name": "Private Key",
+            "regex": "-----BEGIN\\s+(RSA|EC|DSA|OPENSSH|PGP)?\\s*PRIVATE KEY-----",
+            "description": "Private key file"
+        },
+        {
+            "name": "Generic API Key",
+            "regex": "(?i)(api[_-]?key|apikey)\\s*[:=]\\s*['\"]?[a-zA-Z0-9_\\-]{20,}['\"]?",
+            "description": "Generic API key pattern"
+        },
+        {
+            "name": "JWT Token",
+            "regex": "eyJ[A-Za-z0-9-_]+\\.eyJ[A-Za-z0-9-_]+\\.[A-Za-z0-9-_]+",
+            "description": "JSON Web Token"
+        },
+        {
+            "name": "Slack Token",
+            "regex": "xox[baprs]-[0-9]{10,13}-[0-9]{10,13}[a-zA-Z0-9-]*",
+            "description": "Slack API Token"
+        },
+        {
+            "name": "Slack Webhook",
+            "regex": "https://hooks\\.slack\\.com/services/T[A-Z0-9]+/B[A-Z0-9]+/[a-zA-Z0-9]+",
+            "description": "Slack Webhook URL"
+        },
+        {
+            "name": "Google API Key",
+            "regex": "AIza[0-9A-Za-z\\-_]{35}",
+            "description": "Google API Key"
+        },
+        {
+            "name": "Stripe Secret Key",
+            "regex": "sk_live_[0-9a-zA-Z]{24,}",
+            "description": "Stripe Secret API Key"
+        },
+        {
+            "name": "Stripe Publishable Key",
+            "regex": "pk_live_[0-9a-zA-Z]{24,}",
+            "description": "Stripe Publishable API Key"
+        },
+        {
+            "name": "Discord Token",
+            "regex": "[MN][A-Za-z\\d]{23,}\\.[\\w-]{6}\\.[\\w-]{27}",
+            "description": "Discord Bot Token"
+        },
+        {
+            "name": "Password in URL",
+            "regex": "[a-zA-Z]{3,10}://[^/\\s:@]{1,100}:[^/\\s:@]{1,100}@[^\\s/]+",
+            "description": "Password embedded in URL"
+        },
+        {
+            "name": "Generic Password",
+            "regex": "(?i)(password|passwd|pwd)\\s*[:=]\\s*['\"][^'\"]{8,}['\"]",
+            "description": "Hardcoded password"
+        },
+        {
+            "name": "Heroku API Key",
+            "regex": "[h|H][e|E][r|R][o|O][k|K][u|U].{0,30}[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}",
+            "description": "Heroku API Key"
+        },
+        {
+            "name": "SendGrid API Key",
+            "regex": "SG\\.[a-zA-Z0-9_-]{22}\\.[a-zA-Z0-9_-]{43}",
+            "description": "SendGrid API Key"
+        },
+        {
+            "name": "Twilio API Key",
+            "regex": "SK[a-f0-9]{32}",
+            "description": "Twilio API Key"
+        },
+        {
+            "name": "npm Token",
+            "regex": "npm_[A-Za-z0-9]{36}",
+            "description": "npm Access Token"
+        },
+        {
+            "name": "Vite Token",
+            "regex": "vite_[a-zA-Z0-9]{32,}",
+            "description": "Vite API Token"
+        },
+        {
+            "name": "Supabase Anon Key",
+            "regex": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9\\.[a-zA-Z0-9_-]+\\.[a-zA-Z0-9_-]+",
+            "description": "Supabase Anonymous/Public Key (JWT)"
+        },
+        {
+            "name": "Supabase Service Key",
+            "regex": "sbp_[a-f0-9]{40}",
+            "description": "Supabase Service Role Key"
+        }
+    ]
+}

@@ -20,27 +20,30 @@ use scanner::Scanner;
 struct Cli {
     #[command(subcommand)]
     command: Commands,
+
+    /// Output results in JSON format
+    #[arg(short, long, global = true)]
+    json: bool,
 }
 
 #[derive(Subcommand)]
 enum Commands {
+    /// List all your GitHub repositories
     Repos,
 
+    /// Scan a specific repository for secrets
     Scan {
+        /// Repository name (owner/repo or just repo name)
         repo: String,
-
-        #[arg(short, long)]
-        json: bool,
     },
 
+    /// Scan all your repositories for secrets
     ScanAll {
-        #[arg(short, long)]
-        json: bool,
-
-        #[arg(long)]
+        #[arg(long, help = "Scan only private repositories")]
         private_only: bool,
     },
 
+    /// Show available secret detection patterns
     Patterns,
 }
 
@@ -94,13 +97,16 @@ async fn main() {
             }
         }
 
-        Commands::Scan { repo, json } => {
+        Commands::Scan { repo } => {
             let (owner, repo_name) = parse_repo(&repo, &github).await;
-            scan_repository(&github, &owner, &repo_name, json).await;
+            scan_repository(&github, &owner, &repo_name, cli.json).await;
         }
 
-        Commands::ScanAll { json, private_only } => {
-            println!("{}", " Scanning all repositories...".cyan());
+        Commands::ScanAll { private_only } => {
+            let json = cli.json;
+            if !json {
+                println!("{}", " Scanning all repositories...".cyan());
+            }
             match github.list_repos().await {
                 Ok(repos) => {
                     let scanner = Scanner::new();

@@ -192,6 +192,7 @@ Mini-Guardian detecte les types de secrets suivants :
 mini-guardian/
 ├── Cargo.toml          # Configuration du projet et dependances
 ├── Cargo.lock          # Verrou des versions de dependances
+├── regex.json          # Patterns de detection des secrets (modifiable !)
 ├── .env                # Token GitHub (a creer, non versionne)
 ├── .gitignore          # Fichiers ignores par Git
 ├── README.md           # Ce fichier
@@ -199,7 +200,7 @@ mini-guardian/
     ├── main.rs         # Point d'entree et logique CLI
     ├── github.rs       # Client API GitHub
     ├── scanner.rs      # Moteur de scan
-    ├── patterns.rs     # Definitions des patterns de secrets
+    ├── patterns.rs     # Loader des patterns depuis regex.json
     └── reporter.rs     # Formatage et affichage des resultats
 ```
 
@@ -208,8 +209,9 @@ mini-guardian/
 - **main.rs** : Gere les arguments de ligne de commande avec Clap et orchestre les differentes commandes.
 - **github.rs** : Encapsule les appels a l'API GitHub via Octocrab (listing depots, branches, fichiers, contenu).
 - **scanner.rs** : Applique les expressions regulieres sur le contenu des fichiers pour detecter les secrets.
-- **patterns.rs** : Contient toutes les definitions de patterns de secrets (expressions regulieres).
+- **patterns.rs** : Charge les patterns de secrets depuis le fichier `regex.json`.
 - **reporter.rs** : Formate et affiche les resultats du scan (texte colore ou JSON).
+- **regex.json** : Fichier JSON contenant tous les patterns de detection. Facile a modifier !
 
 ---
 
@@ -234,17 +236,17 @@ mini-guardian/
 
 ### Ajouter un nouveau pattern de secret
 
-Pour ajouter un nouveau type de secret a detecter :
+Pour ajouter un nouveau type de secret a detecter, c'est tres simple !
 
-1. Ouvrez le fichier `src/patterns.rs`
-2. Ajoutez un nouveau `SecretPattern` dans la fonction `get_default_patterns()` :
+1. Ouvrez le fichier `regex.json` a la racine du projet
+2. Ajoutez un nouvel objet dans le tableau `patterns` :
 
-```rust
-SecretPattern::new(
-    "Nom du Secret",           // Nom affiche dans les rapports
-    r"expression_reguliere",   // Regex pour detecter le secret
-    "Description du secret",   // Description courte
-),
+```json
+{
+    "name": "Mon Service API Key",
+    "regex": "myservice_[a-zA-Z0-9]{32}",
+    "description": "Cle API pour Mon Service"
+}
 ```
 
 3. Testez votre pattern :
@@ -252,6 +254,8 @@ SecretPattern::new(
    cargo run -- patterns
    cargo run -- scan votre-depot-de-test
    ```
+
+**Note** : Les patterns sont charges dynamiquement depuis `regex.json`, donc pas besoin de recompiler le projet !
 
 ### Standards de code
 
